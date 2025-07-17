@@ -1,0 +1,14 @@
+
+services:
+  dbt_duckdb:
+    build: .
+    volumes:
+      - ./duckdb:/app/duckdb
+      - ./dbt_project:/app/dbt_project
+      - ./exports:/app/exports
+    environment:
+      - EXPORT_PATH=/app/exports
+      - DBT_PROFILES_DIR=/app/dbt_project
+    command: >
+      sh -c "python duckdb/setup_duckdb.py &&
+             dbt build --project-dir /app/dbt_project"

@@ -1,13 +1,10 @@
 
-
-
-
 {{ config(
     materialized='view',
     post_hook="""
         COPY (
             SELECT * FROM {{ this }}
-        ) TO '../export/{{ this.name }}.parquet' (FORMAT PARQUET)
+        ) TO '{{ env_var('EXPORT_PATH', '../') }}/{{ this.name }}.parquet' (FORMAT PARQUET)
     """
 ) }}
 

@@ -15,4 +15,4 @@ dbt_project:
       threads: 4
       export_path: /app/output/
 
-  target: dev
+  target: "{{ env_var('ENVIRONMENT', 'dev') }}"
