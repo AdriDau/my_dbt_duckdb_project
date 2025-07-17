@@ -1,5 +1,6 @@
 import duckdb
 import csv
+import os
 from pathlib import Path
 
 
@@ -130,6 +131,8 @@ if __name__ == "__main__":
     DATA_SRC_DIR = ROOT_DIR / "data" 
     DATA_CLEAN_DIR = ROOT_DIR / "data_clean"
     DATA_ERROR_DIR = ROOT_DIR /"data_parsing_error"
+    os.makedirs(DATA_CLEAN_DIR, exist_ok=True)
+    os.makedirs(DATA_ERROR_DIR, exist_ok=True)
     DB_PATH = ROOT_DIR / "database.duckdb" 
     SCHEMA_RAW = "raw"
     
