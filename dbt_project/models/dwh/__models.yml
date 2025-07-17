@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: dwh_order_lines
+    description: "Big table with everythin"
+    columns:
+      - name: id
+        description: "Primary key"
+        data_tests:
+          - not_null
+          - unique

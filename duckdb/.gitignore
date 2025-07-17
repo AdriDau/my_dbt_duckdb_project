@@ -1,0 +1,3 @@
+data_clean/*
+data_parsing_error/*
+database.duckdb

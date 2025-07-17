@@ -1,0 +1,59 @@
+version: 2
+
+models:
+  - name: base_raw_products
+    description: "Products list"
+    columns:
+      - name: product_id
+        description: "Primary key"
+        data_tests:
+          - not_null
+          - unique
+
+  - name: base_raw_customer
+    description: "Customers"
+    columns:
+      - name: customer_id
+        description: "Primary key"
+        data_tests:
+          - not_null
+          - unique
+
+  - name: base_raw_orders
+    description: "Orders"
+    columns:
+      - name: order_id
+        description: "Primary key"
+        data_tests:
+          - not_null
+          - unique
+      - name: customer_id
+        description: "Foreign_key"
+        data_tests:
+          - relationships:
+              to: ref('base_raw_customer')
+              field: customer_id
+
+  - name: base_raw_items
+    description: "Lines inside orders"
+    columns:
+      - name: item_id
+        description: "Primary key"
+        data_tests:
+          - not_null
+          - unique
+      - name: order_id
+        description: "Foreign_key"
+        data_tests:
+          - relationships:
+              to: ref('base_raw_orders')
+              field: order_id
+              config:
+                    severity: warn # 1 missing order_id, not really usefull to clean it
+      - name: orders
+      - name: product_id
+        description: "Foreign_key"
+        data_tests:
+          - relationships:
+              to: ref('base_raw_products')
+              field: product_id

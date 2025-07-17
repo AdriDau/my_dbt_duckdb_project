@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: raw
+    tables:
+      - name: products
+      - name: customer
+        columns:
+          - name: customer_id
+            data_tests:
+              - not_null
+              - unique:
+                  config:
+                    severity: warn # Add warning because of two duplicated lines => Just keep one on staging per example
+      - name: orders
+      - name: items

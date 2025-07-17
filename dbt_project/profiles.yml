@@ -1,0 +1,18 @@
+
+
+
+dbt_project:
+  outputs:
+    dev:
+      type: duckdb
+      path: ../duckdb/database.duckdb
+      threads: 4
+      export_path: /tmp/
+
+    docker:
+      type: duckdb
+      path: /app/duckdb/database.duckdb
+      threads: 4
+      export_path: /app/output/
+
+  target: dev
