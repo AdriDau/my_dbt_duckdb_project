@@ -2,6 +2,7 @@
 {{ config(
     materialized='view',
     post_hook="""
+    -- Export table from this table.
         COPY (
             SELECT * FROM {{ this }}
         ) TO '{{ env_var('EXPORT_PATH', '../exports') }}/{{ this.name }}.parquet' (FORMAT PARQUET)
@@ -12,6 +13,8 @@
 
 -- Instead of metrics per date & customer => metrics per date
 -- There are only one order per customer per day maximum
+-- After running this model, the data will be exporterd to ../exports/daily_metrics.parquet
+-- I think it's better to do it outside DBT (dedicated operator inside Airflow per example), this is just an example.
 
 with start_end_date as (
     select 
