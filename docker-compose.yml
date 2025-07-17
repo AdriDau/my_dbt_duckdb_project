@@ -3,8 +3,6 @@ services:
   dbt_duckdb:
     build: .
     volumes:
-      - ./duckdb:/app/duckdb
-      - ./dbt_project:/app/dbt_project
       - ./exports:/app/exports
     environment:
       - EXPORT_PATH=/app/exports

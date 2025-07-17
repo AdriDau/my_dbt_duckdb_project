@@ -4,14 +4,14 @@
     post_hook="""
         COPY (
             SELECT * FROM {{ this }}
-        ) TO '{{ env_var('EXPORT_PATH', '../') }}/{{ this.name }}.parquet' (FORMAT PARQUET)
+        ) TO '{{ env_var('EXPORT_PATH', '../exports') }}/{{ this.name }}.parquet' (FORMAT PARQUET)
     """
 ) }}
 
 
 
 -- Instead of metrics per date & customer => metrics per date
--- There is only one order per customer per day max
+-- There are only one order per customer per day maximum
 
 with start_end_date as (
     select 

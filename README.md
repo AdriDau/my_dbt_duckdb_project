@@ -1,57 +1,94 @@
-# TECHNICAL TEST : E-COMMERCE DATA PIPELINE
 
-You were recently hired by an E-commerce company as a Data Engineer. Your mission is to build a simple but modern data pipeline to analyze sales performance using the provided datasets.
+# 🦆 DBT + DuckDB Project
 
-## **Datasets**
-* **Products**: Available product catalog (`data/products.csv`)
-* **Items**: Individual line items (`data/items.csv`)
-* **Orders**: Customer transaction records (`data/orders.csv`)
-* **Customers**: Customer master data (`data/customer.csv`)
-
-##  **Requirements**
-
-You will use **Python** as the main programming language. 
-
-It is possible to use containerized tools if considered useful.
-
-
-### **Core Tasks**
-
-1. **Data Processing Setup**
-   - Choose a modern data processing tool (e.g. DuckDB, Polars, Pandas or any other)
-   - Load and explore the four datasets
-   - Document any data quality issues you find
-
-2. **Data Modeling & Transformation**
-   - Create a simple data model joining all datasets
-   - Build daily customer summary metrics:
-     - Daily spending per customer
-     - Number of orders per customer per day
-     - Average order value
-   - Implement this as reusable code/functions
-
-3. **Production grade code**
-   - Apply software engineering best practices for maintainable, scalable code
-
-### **Optional Enhancements (if time permits)**
-
-- Simple visualization of key metrics
-- Basic data validation checks
-- Export results to a structured format (JSON/Parquet)
-- To automate this and make it run every day
-- To bring it in a "Infra-as-Code" way
-- Anything you want to show
-
-
-## **Evaluation Focus**
-
-- **Code Quality**: Clean, readable, well-structured code
-- **Data Engineering Thinking**: Proper data handling and transformation logic
-- **Problem Solving**: How you approach and solve the business questions
-- **Documentation**: Clear explanations and instructions
-- **Modern Practices**: Use of appropriate tools and containerization
+This project demonstrates a simple data pipeline using **DuckDB** as the database and **dbt** for transformations and tests.
+You can run everything locally or inside Docker for a reproducible environment.
 
 ---
 
+## Prerequisites
 
-**Note**: Focus on demonstrating your data engineering thought process rather than building production-scale infrastructure. Quality over complexity!
+* [Docker](https://www.docker.com/) installed and running.
+* [Git](https://git-scm.com/) installed if you want to clone/push.
+
+---
+
+## Run the project with Docker
+
+   From the root of the repository (where `docker-compose.yml` is located):
+
+   ```bash
+   docker compose up --build
+   ```
+
+   This will:
+
+   * Build a Docker image with Python, dbt, DuckDB, and your project files.
+   * Run `setup_duckdb.py` to clean csv file and generate `database.duckdb`
+   * Run `dbt build` inside the container to run & build models and then export a table.
+   
+
+   You should see dbt running and creating models.
+
+   The generated Parquet exports will be available in 
+
+   ```
+   ./exports/
+   ```
+
+   Warning : currently no log on the export, because it's executed inside DBT on post-hook
+
+
+## Development (local)
+
+You can also work locally if you prefer:
+
+1. **Create a Python virtual environment:**
+
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   pip install --upgrade pip
+   pip install -r requirements.txt
+   ```
+
+2. **Generate the DuckDB database:**
+
+   ```bash
+   python ./duckdb/setup_duckdb.py
+   ```
+
+   This will create `database.duckdb` inside the `duckdb/` folder.
+
+3. **Run dbt:**
+
+   ```bash"
+   cd ../dbt_project
+   dbt build
+   ```
+
+   dbt will read the DuckDB file and run & test models defined in `models/`.
+
+---
+
+##  Navigating DuckDB
+
+Once your `database.duckdb` is created, you can open a DuckDB shell:
+
+```bash
+duckdb duckdb/database.duckdb
+```
+
+Inside the shell, you can run SQL directly, for example:
+
+```
+SELECT * FROM raw.products LIMIT 10;
+SELECT * FROM dwh.daily_metrics order by order_purchase_date desc LIMIT 20;
+SELECT * FROM information_schema.tables;
+```
+
+Exit with:
+
+```
+.quit
+```

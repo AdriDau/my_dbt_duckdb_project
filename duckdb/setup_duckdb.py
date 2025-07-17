@@ -125,7 +125,7 @@ def create_views_and_describe_schema(
 
 if __name__ == "__main__":
     
-    #
+    #vars
     ROOT_DIR = Path(__file__).parent.resolve()
     DATA_SRC_DIR = ROOT_DIR / "data" 
     DATA_CLEAN_DIR = ROOT_DIR / "data_clean"
@@ -153,7 +153,7 @@ if __name__ == "__main__":
             error_dir = DATA_ERROR_DIR)
 
 
-    # 4. Création des vues et affichage du schéma pour chaque fichier nettoyé
+    # Creation view and log on metadata
     print("\n📦 Creating views and describing schemas...")
     for view_name, file_name in SOURCE_FILES.items():
         create_views_and_describe_schema(view_name=view_name,
@@ -162,5 +162,5 @@ if __name__ == "__main__":
                                         con_duckdb=CON, 
                                         schema=SCHEMA_RAW)
     
-    # 5. Close connecrtion
+    # Close connection
     CON.close() 
